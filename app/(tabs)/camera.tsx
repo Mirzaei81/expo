@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Button, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Button, Image, ScrollView ,Pressable} from 'react-native';
 // import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -190,8 +190,8 @@ const presetImage = (height) => {
 
 return (
   
-    <View style={styles.container}>
-      {!queries && !image && <Text style={{padding:20}}>GPT Vision can recognize general objects, scenes, colors, and shapes in the images. It can also answer questions about the content, context, and attributes of the images. For example, you can ask it what color a car is or what some ideas for dinner might be based on what is in your fridge.</Text>}
+    <ScrollView horizontal={false} contentContainerStyle={{ flexGrow: 1 }} style={styles.container}>
+      {/* {!queries && !image && <Text style={{padding:20}}>GPT Vision can recognize general objects, scenes, colors, and shapes in the images. It can also answer questions about the content, context, and attributes of the images. For example, you can ask it what color a car is or what some ideas for dinner might be based on what is in your fridge.</Text>} */}
       {/* {!queries && !image && 
       <View style={{marginLeft:10, marginRight:10}}>
         <Button
@@ -207,9 +207,12 @@ return (
       </View>
       } */}
       {/* {!queries && !image && <View style={{margin:10}}><Button title="Take Picture" onPress={() => takePicture()} /></View>} */}
-      {!queries && !image && <View style={{marginLeft:10, marginRight:10}}>
-          <Button title="Pick an Image From Gallery" onPress={() => pickImage()} />
-          <Text style={{margin: "auto",padding:20, fontSize:"2rem"}}>Pick an image from the gallery or try one of these:</Text>
+      {!queries && !image && <View style={{marginLeft:10, marginRight:10, alignItems:'center'}} className='mt-7'>
+          <Pressable onPress={() => pickImage()}  className="w-2/3 bg-blue-500 hover:bg-blue-700 text-white rounded-full font-bold py-2 px-4 inline-flex items-center">
+        <Text className="text-white">Pick An Image From Gallery</Text>
+      </Pressable>
+
+          <Text style={{margin: "auto",padding:20}} className="text-2xl">Pick an image from the gallery or try one of these:</Text>
           <ScrollView >
           
           <TouchableOpacity style={{marginBottom:20}} onPress={() => presetImage(281)}>
@@ -260,7 +263,7 @@ return (
 }
       {queries && queries.length==0 && queriesTwo && queriesTwo.length==0 && <View ><Text style={{padding:20}}>No results for this image. </Text><TouchableOpacity href="https://websearch-via-camera.com/camera/"><Button title="Start over"></Button></TouchableOpacity></View>}
 
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({

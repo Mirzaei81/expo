@@ -24,11 +24,11 @@ export default function TabLayout() {
         options={{
           title: 'Websearch via Camera',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          
-        }}
+        }
+      }
       />
       <Tabs.Screen
-        name="two"
+        name="camera"
         options={{
           title: 'Upload an Image',
           tabBarIcon: ({ color }) => <TabBarIcon name="camera" color={color} />,
