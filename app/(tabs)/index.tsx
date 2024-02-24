@@ -39,29 +39,7 @@ export default function TabOneScreen() {
           How It Works?
         </StyledText>
 
-        <StyledView className="justify-start">
-          <StyledView className="flex justify-between m-8">
-            <FontAwesome className="fa-fw" size={25} name={"language"}>
-              <StyledText className="text-sm m-2">
-                Select your preferred language from the menu.
-              </StyledText>
-            </FontAwesome>
-          </StyledView>
-          <StyledView className="flex w-30 align-center m-8">
-            <Picker
-              className="justify-center"
-              selectedValue={selectedLanguage}
-              onValueChange={(itemValue, itemIndex) =>
-                setSelectedLanguage(itemValue)
-              }
-              accessibilityLabel="Select your language."
-            >
-              <Picker.Item label="English" value="en" />
-              <Picker.Item label="Spanish - Español" value="es" />
-              <Picker.Item label="Indonesian - Bahasa Indonesia" value="id" />
-              <Picker.Item label="Greek - Ελληνικά" value="el" />
-            </Picker>
-          </StyledView>
+        <StyledView className="items-center">
 
           <StyledView className="flex justify-between m-8">
             <FontAwesome className="fa-fw" size={25} name={"upload"}>
@@ -73,7 +51,7 @@ export default function TabOneScreen() {
           <StyledView className="flex justify-between m-8">
             <FontAwesome className="fa-fw" size={25} name={"search"}>
               <StyledText className="text-sm m-2">
-                Browse with Search Intents based on your image.
+                Browse with Search Intents based on the image.
               </StyledText>
             </FontAwesome>
           </StyledView>
