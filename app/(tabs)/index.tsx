@@ -40,7 +40,6 @@ export default function TabOneScreen() {
         </StyledText>
 
         <StyledView className="items-center">
-
           <StyledView className="flex justify-between m-8">
             <FontAwesome className="fa-fw" size={25} name={"upload"}>
               <StyledText className="text-sm m-2">

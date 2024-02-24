@@ -80,9 +80,12 @@ export default function TabTwoScreen() {
   const canvasRef = useRef();
 
   useEffect(() => {
-    if (!image) return () => {};
+    if (!image)
+      return () => {
+        console.log("no image");
+      };
     const ctx = canvasRef.current.getContext("2d");
-
+    console.log(ctx);
     var img = new window.Image();
     if (resized) {
       img.onload = function () {
@@ -151,14 +154,14 @@ export default function TabTwoScreen() {
         // File uploaded successfully
         // console.log(data);
         setQueries(data);
-        setSpinnerVisible(false);
+        // setSpinnerVisible(false);
       })
       .catch((error) => {
         setStatusMessage(
           "Error uploading this file. Try with a different image!"
         );
-        setSpinnerVisible(false);
-        console.error("Error uploading the file:", error);
+        // setSpinnerVisible(false);
+        // console.error("Error uploading the file:", error);
       });
 
     const url2 = `https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-2b706faa-8009-4af8-9ba2-0d52f5a1bed1/default/doVision2`;
@@ -177,25 +180,26 @@ export default function TabTwoScreen() {
         // File uploaded successfully
         // console.log(data);
         setQueriesTwo(data);
-        setSpinnerVisible(false);
+        // setSpinnerVisible(false);
       })
       .catch((error) => {
         setStatusMessage(
           "Error uploading this file. Try with a different image!"
         );
-        setSpinnerVisible(false);
-        console.error("Error uploading the file:", error);
+        // setSpinnerVisible(false);
+        // console.error("Error uploading the file:", error);
       });
   }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       quality: 1,
+      base64: true,
     });
-
-    setImage(result.uri);
-    setImageWidth(result.width);
-    setImageHeight(result.height);
+    console.log(result.assets[0].uri);
+    setImage(result.assets[0].uri);
+    setImageWidth(result.assets[0].width);
+    setImageHeight(result.assets[0].height);
   };
 
   const startOver = () => {
@@ -392,7 +396,6 @@ export default function TabTwoScreen() {
         <View>
           <Spinner visible={spinnerVisible} />
           <Text style={{ padding: 20 }}>{statusMessage} </Text>
-          {startOver()}
           <PureCanvas ref={canvasRef} />
         </View>
       )}
@@ -418,12 +421,15 @@ export default function TabTwoScreen() {
           {queriesTwo.map(makeButton, this)}
         </StyledView>
       )}
-      {(queriesTwo || queries) && (
+      {((queriesTwo && queriesTwo.length > 0) ||
+        (queries && queries.length > 0)) && (
         <Text style={{ margin: "20px", fontSize: "large", fontWeight: "bold" }}>
           Want to restart?
         </Text>
       )}
-      {(queriesTwo || queries) && startOver()}
+      {((queriesTwo && queriesTwo.length > 0) ||
+        (queries && queries.length > 0)) &&
+        startOver()}
       {queries && queries.length == 0 && queriesTwo && queriesTwo.length == 0 && (
         <View>
           <Text style={{ padding: 20 }}>No results for this image. </Text>

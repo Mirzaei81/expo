@@ -34,7 +34,7 @@ export default function TabLayout() {
           title: "Upload an Image",
           tabBarIcon: ({ color }) => <TabBarIcon name="camera" color={color} />,
           headerRight: () => (
-            <Link href="/modal" asChild>
+            <Link href="/info" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome
