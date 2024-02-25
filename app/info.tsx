@@ -13,7 +13,7 @@ export default function ModalScreen() {
         the images. It can also answer questions about the content, context, and
         attributes of the images. For example, you can ask it what color a car
         is or what some ideas for dinner might be based on what is in your
-        fridge.
+        fridge. In our case, we offer Search Intents based on your image!
       </SyledText>
       <View />
 

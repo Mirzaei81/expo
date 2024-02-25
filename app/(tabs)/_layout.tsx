@@ -62,9 +62,10 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Websearch via Camera",
-          tabBarIcon: () => <TabBarIcon name="home" color={"purple"} />,
+          tabBarAccessibilityLabel: "Go to Homepage",
+          tabBarIcon: () => <TabBarIcon name="home" color={"rebeccapurple"} />,
           tabBarLabelStyle: {
-            color: 'purple',
+            color: 'rebeccapurple',
           },
           headerRight: () => (
             <Picker
@@ -85,7 +86,11 @@ export default function TabLayout() {
         name="camera"
         options={{
           title: "Upload an Image",
-          tabBarIcon: ({ color }) => <TabBarIcon name="camera" color={color} />,
+          tabBarAccessibilityLabel: "Upload an Image",
+          tabBarIcon: ({ color }) => <TabBarIcon name="camera" color={'darkslategray'} />,
+          tabBarLabelStyle: {
+            color: 'darkslategray',
+          },
           headerRight: () => (
             <Link href="/info" asChild>
               <Pressable>

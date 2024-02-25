@@ -71,7 +71,7 @@ export default function Intent() {
   const startOver = () => {
     return (
       <StyledView className="items-center">
-        <Link href="https://websearch-via-camera.com" asChild>
+        <Link href="https://websearch-via-camera.com/camera" asChild>
           <Pressable className="w-2/3 mt-5 mb-5 p-4 bg-blue-500 hover:bg-blue-700 text-white rounded-full font-bold py-2 px-4 inline-flex items-center">
             <Text className="text-white">Start Over</Text>
           </Pressable>
