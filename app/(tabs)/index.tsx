@@ -30,9 +30,6 @@ export default function TabOneScreen() {
             </Text>
           </Pressable>
         </Link>
-        <StyledText className="text-l p-4">
-          Upload an image to begin your Search!
-        </StyledText>
         <StyledText className="leading-loose text-l font-bold text-black-600 mt-20">
           How It Works?
         </StyledText>
@@ -40,12 +37,12 @@ export default function TabOneScreen() {
         <StyledView className="items-start">
           <StyledView className="flex justify-between m-5">
             <StyledText className="text-sm m-2">
-              Click the 'Start' button to upload an image.
+              Upload an image.
             </StyledText>
           </StyledView>
           <StyledView className="flex justify-between m-5">
             <StyledText className="text-sm m-2">
-              Browse with Search Intents based on the image.
+              Explore the web with Search Intents based on the image.
             </StyledText>
           </StyledView>
           <StyledView className="flex justify-between m-5">
