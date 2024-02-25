@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
-import { Pressable } from "react-native";
+import { Pressable, View} from "react-native";
+import {Picker} from '@react-native-picker/picker';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -12,6 +13,42 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
+  // const [selectedLanguage, setSelectedLanguage] = useState('en');
+
+  useEffect(()=>{    
+    let x = document.cookie;
+    const parts = x.split(`lang=`);
+    if (parts.length === 2) {
+      let cLang = parts.pop().split(';').shift();
+      if (cLang == 'es') {
+        window.location.href = '/es';
+      }
+      if (cLang == 'id') {
+        window.location.href = '/id';
+      }
+      if (cLang == 'el') {
+        window.location.href = '/el';
+      }
+    }
+      }, [])
+
+  const handleLangSelection = (itemValue, itemIndex) => {
+    if (itemIndex == 0){
+      document.cookie = 'lang=en;';
+    }
+    if (itemIndex == 1) {
+      window.location.href = '/es';
+      document.cookie = 'lang=es;';
+    }
+    if (itemIndex == 2) {
+      window.location.href = '/id';
+      document.cookie = 'lang=id;';
+    }
+    if (itemIndex == 3) {
+      window.location.href = '/el';
+      document.cookie = 'lang=el;';
+    }
+  } 
   return (
     <Tabs
       screenOptions={
@@ -25,7 +62,23 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Websearch via Camera",
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarIcon: () => <TabBarIcon name="home" color={"purple"} />,
+          tabBarLabelStyle: {
+            color: 'purple',
+          },
+          headerRight: () => (
+            <Picker
+              className='m-10'
+              selectedValue={0}
+              onValueChange={(itemValue, itemIndex) => 
+                handleLangSelection(itemValue, itemIndex)
+              }>
+              <Picker.Item label="English" value="en" />
+              <Picker.Item label="Español" value="es" />
+              <Picker.Item label="Indonesian" value="id" />
+              <Picker.Item label="Ελληνικά" value="el" />
+            </Picker>
+            ),
         }}
       />
       <Tabs.Screen
