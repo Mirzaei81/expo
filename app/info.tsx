@@ -1,6 +1,3 @@
-import { StatusBar } from "expo-status-bar";
-import { Platform, StyleSheet } from "react-native";
-
 import { styled } from "nativewind";
 import { Text, View } from "react-native";
 import "../assets/styles.css";

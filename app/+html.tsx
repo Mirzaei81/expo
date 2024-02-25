@@ -12,7 +12,7 @@ export default function Root({ children }: { children: React.ReactNode }) {
         <meta
           content="https://websearch-via-camera.com/logo.png"
           itemprop="image"
-        />  
+        />
 
         <meta property="og:title" content="WebSearch Via Camera" />
         <meta property="og:type" content="website" />

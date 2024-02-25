@@ -4,7 +4,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Button,
   Image,
   ScrollView,
   Pressable,
@@ -12,7 +11,7 @@ import {
 // import { Camera } from 'expo-camera';
 import * as ImagePicker from "expo-image-picker";
 import Spinner from "react-native-loading-spinner-overlay";
-import { FlashList } from "@shopify/flash-list";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import { Link } from "expo-router";
 import { styled } from "nativewind";
 import "../../assets/styles.css";
@@ -26,58 +25,12 @@ export default function TabTwoScreen() {
   const [imageWidth, setImageWidth] = useState(null);
   const [imageHeight, setImageHeight] = useState(null);
   const [resized, setResized] = useState(false);
-  const [statusMessage, setStatusMessage] = useState(
-    "Your picture is being uploaded now and then GPT will take a minute or two. Please wait!"
-  );
-  const [spinnerVisible, setSpinnerVisible] = useState(true);
-  // const [type, setType] = useState(Camera.Constants.Type.back);
-  const [queries, setQueries] = useState(null);
-  const [queriesTwo, setQueriesTwo] = useState(null);
-
-  // Image.prefetch("https://res.cloudinary.com/doic0dzx7/image/upload/w_500/r_100/v1708130148/bcubjmsofu123pvzdyjn.jpg");
-
-  function makeButton(data) {
-    const websearch = "https://result.websearch-via-camera.com/en/".concat(
-      data
-    );
-    return (
-      // <TouchableOpacity
-      //   style={{ marginTop: 20, marginBottom: 20 }}
-      //   href={websearch}
-      // >
-      //   <Button title={data}></Button>
-      // </TouchableOpacity>
-      <Link href={websearch} asChild>
-        <Pressable className="w-2/3 mt-5 mb-5 p-4 bg-blue-500 hover:bg-blue-700 text-white rounded-full font-bold py-2 px-4 inline-flex items-center">
-          <Text className="text-white">{data}</Text>
-        </Pressable>
-      </Link>
-    );
-  }
-
-  function _makeButton(item) {
-    const websearch = "https://result.websearch-via-camera.com/en/".concat(
-      item
-    );
-    return (
-      <Link href={websearch} asChild>
-        <Pressable className="w-2/3 mt-5 mb-5 p-4 bg-blue-500 hover:bg-blue-700 text-white rounded-full font-bold py-2 px-4 inline-flex items-center">
-          <Text className="text-white">{item}</Text>
-        </Pressable>
-      </Link>
-      // <TouchableOpacity
-      //   style={{ marginTop: 20, marginBottom: 20 }}
-      //   href={websearch}
-      // >
-      //   <Button title={item.item.value}></Button>
-      // </TouchableOpacity>
-    );
-  }
 
   const PureCanvas = React.forwardRef((props, ref) => (
     <canvas width={imageWidth} height={imageHeight} ref={ref} />
   ));
   const canvasRef = useRef();
+  const router = useRouter();
 
   useEffect(() => {
     if (!image)
@@ -85,14 +38,19 @@ export default function TabTwoScreen() {
         console.log("no image");
       };
     const ctx = canvasRef.current.getContext("2d");
-    console.log(ctx);
+    //console.log(ctx);
     var img = new window.Image();
     if (resized) {
       img.onload = function () {
         canvasRef.current.width = imageWidth;
         canvasRef.current.height = imageHeight;
         ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
-        upload();
+        setImage(null);
+        router.push({
+          pathname: "intent",
+          params: { id: image, width: imageWidth, height: imageHeight },
+        });
+        //upload();
       };
     } else {
       img.onload = function () {
@@ -136,67 +94,12 @@ export default function TabTwoScreen() {
   //     }
   //   }
 
-  function upload() {
-    // let resized = resize();
-    const url = `https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-2b706faa-8009-4af8-9ba2-0d52f5a1bed1/default/doVision`;
-
-    fetch(url, {
-      method: "POST",
-      body: JSON.stringify({
-        base64: `${image}`,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // File uploaded successfully
-        // console.log(data);
-        setQueries(data);
-        // setSpinnerVisible(false);
-      })
-      .catch((error) => {
-        setStatusMessage(
-          "Error uploading this file. Try with a different image!"
-        );
-        // setSpinnerVisible(false);
-        // console.error("Error uploading the file:", error);
-      });
-
-    const url2 = `https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-2b706faa-8009-4af8-9ba2-0d52f5a1bed1/default/doVision2`;
-
-    fetch(url2, {
-      method: "POST",
-      body: JSON.stringify({
-        base64: `${image}`,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // File uploaded successfully
-        // console.log(data);
-        setQueriesTwo(data);
-        // setSpinnerVisible(false);
-      })
-      .catch((error) => {
-        setStatusMessage(
-          "Error uploading this file. Try with a different image!"
-        );
-        // setSpinnerVisible(false);
-        // console.error("Error uploading the file:", error);
-      });
-  }
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       quality: 1,
       base64: true,
     });
-    console.log(result.assets[0].uri);
+    //console.log(result.assets[0].uri);
     setImage(result.assets[0].uri);
     setImageWidth(result.assets[0].width);
     setImageHeight(result.assets[0].height);
@@ -229,59 +132,74 @@ export default function TabTwoScreen() {
 
   const presetImage = (height) => {
     if (height == 750) {
-      setQueries([
-        "Avocado toast recipe",
-        "How to make avocado spread for bread",
-        "Healthy breakfast ideas",
-        "Egg and avocado toast",
-        "Avocado toast with boiled eggs",
-        "Simple avocado breakfast",
-        "Vegetarian breakfast recipes",
-        "Avocado and tomato on toast",
-        "Avocado toast variations",
-        "Nutritious breakfast with avocado and eggs",
-      ]);
-      setQueriesTwo([
-        "Slices of bread with avocado spread",
-        "A half of an avocado with the pit still inside",
-        "Two halves of a boiled egg with pepper sprinkled on top",
-        "Fresh cherry tomatoes",
-        "Wooden cutting board",
-        "Sprinkle of pepper and spices around the board",
-        "Sprigs of dill",
-      ]);
+      router.push({
+        pathname: "intent",
+        params: {
+          queries: [
+            "Avocado toast recipe",
+            "How to make avocado spread for bread",
+            "Healthy breakfast ideas",
+            "Egg and avocado toast",
+            "Avocado toast with boiled eggs",
+            "Simple avocado breakfast",
+            "Vegetarian breakfast recipes",
+            "Avocado and tomato on toast",
+            "Avocado toast variations",
+            "Nutritious breakfast with avocado and eggs",
+          ],
+          queriesTwo: [
+            "Slices of bread with avocado spread",
+            "A half of an avocado with the pit still inside",
+            "Two halves of a boiled egg with pepper sprinkled on top",
+            "Fresh cherry tomatoes",
+            "Wooden cutting board",
+            "Sprinkle of pepper and spices around the board",
+            "Sprigs of dill",
+          ],
+        },
+      });
     }
     if (height == 281) {
-      setQueries([
-        "Sea otter with pup",
-        "Mother sea otter with baby",
-        "Sea otter habitat and lifestyle",
-        "Cute sea otter family",
-        "Sea otter conservation status",
-      ]);
-      setQueriesTwo([
-        "An adult sea otter",
-        "A baby sea otter (pup)",
-        "Water with ripples",
-      ]);
+      router.push({
+        pathname: "intent",
+        params: {
+          queries: [
+            "Sea otter with pup",
+            "Mother sea otter with baby",
+            "Sea otter habitat and lifestyle",
+            "Cute sea otter family",
+            "Sea otter conservation status",
+          ],
+          queriesTwo: [
+            "An adult sea otter",
+            "A baby sea otter",
+            "Water with ripples",
+          ],
+        },
+      });
     }
     if (height == 306) {
-      setQueries([
-        "Ten Commandments in the Bible",
-        "Bible verses about not killing",
-        "Thou shalt not steal verse",
-        "Exodus 20 commandments text",
-        "Biblical text Thou shalt not bear false witness",
-        "Scripture on not committing adultery",
-        "Holy Bible commandments passage",
-        "Christian ethical teachings in Bible",
-        "Old Testament rules and commandments",
-        "Decalogue text in Christianity",
-      ]);
-      setQueriesTwo([
-        "A printed page from bible.",
-        "Text, specifically what appears to be a numbered list of the Ten Commandments from the Bible.",
-      ]);
+      router.push({
+        pathname: "intent",
+        params: {
+          queries: [
+            "Ten Commandments in the Bible",
+            "Bible verses about not killing",
+            "Thou shalt not steal verse",
+            "Exodus 20 commandments text",
+            "Biblical text Thou shalt not bear false witness",
+            "Scripture on not committing adultery",
+            "Holy Bible commandments passage",
+            "Christian ethical teachings in Bible",
+            "Old Testament rules and commandments",
+            "Decalogue text in Christianity",
+          ],
+          queriesTwo: [
+            "A printed page from bible.",
+            "Text, specifically what appears to be a numbered list of the Ten Commandments from the Bible.",
+          ],
+        },
+      });
     }
   };
 
@@ -291,23 +209,7 @@ export default function TabTwoScreen() {
       contentContainerStyle={{ flexGrow: 1 }}
       style={styles.container}
     >
-      {/* {!queries && !image && <Text style={{padding:20}}>GPT Vision can recognize general objects, scenes, colors, and shapes in the images. It can also answer questions about the content, context, and attributes of the images. For example, you can ask it what color a car is or what some ideas for dinner might be based on what is in your fridge.</Text>} */}
-      {/* {!queries && !image && 
-      <View style={{marginLeft:10, marginRight:10}}>
-        <Button
-        title="Flip Camera"
-        onPress={() => {
-          setType(
-            type === Camera.Constants.Type.back
-              ? Camera.Constants.Type.front
-              : Camera.Constants.Type.back
-          );
-        }}>
-      </Button>
-      </View>
-      } */}
-      {/* {!queries && !image && <View style={{margin:10}}><Button title="Take Picture" onPress={() => takePicture()} /></View>} */}
-      {!queries && !image && (
+      {!image && (
         <View
           style={{ marginLeft: 10, marginRight: 10, alignItems: "center" }}
           className="mt-7"
@@ -380,62 +282,7 @@ export default function TabTwoScreen() {
           </ScrollView>
         </View>
       )}
-
-      {/* {!queries && !image && 
-      <View style={styles.cameraContainer}>
-        <Camera 
-          ref={ref => setCamera(ref)} 
-          style={styles.camera} 
-          type={type} 
-          ratio={'1:1'} 
-        />
-      </View>
-      } */}
-
-      {!queries && image && (
-        <View>
-          <Spinner visible={spinnerVisible} />
-          <Text style={{ padding: 20 }}>{statusMessage} </Text>
-          <PureCanvas ref={canvasRef} />
-        </View>
-      )}
-      {/* {!queries && image && <Button title="Reset" onPress={() => removeImage()} />} */}
-      {queries && queries.length > 0 && (
-        <Text style={{ margin: "20px", fontSize: "large", fontWeight: "bold" }}>
-          Search Intents:
-        </Text>
-      )}
-      {queries && queries.length > 0 && (
-        <StyledView className="items-center">
-          {queries.map(_makeButton, this)}
-        </StyledView>
-      )}
-
-      {queriesTwo && queriesTwo.length > 0 && (
-        <Text style={{ margin: "20px", fontSize: "large", fontWeight: "bold" }}>
-          Objects in the photo:
-        </Text>
-      )}
-      {queriesTwo && queriesTwo.length > 0 && (
-        <StyledView className="items-center">
-          {queriesTwo.map(makeButton, this)}
-        </StyledView>
-      )}
-      {((queriesTwo && queriesTwo.length > 0) ||
-        (queries && queries.length > 0)) && (
-        <Text style={{ margin: "20px", fontSize: "large", fontWeight: "bold" }}>
-          Want to restart?
-        </Text>
-      )}
-      {((queriesTwo && queriesTwo.length > 0) ||
-        (queries && queries.length > 0)) &&
-        startOver()}
-      {queries && queries.length == 0 && queriesTwo && queriesTwo.length == 0 && (
-        <View>
-          <Text style={{ padding: 20 }}>No results for this image. </Text>
-          {startOver()}
-        </View>
-      )}
+      {image && <PureCanvas ref={canvasRef} />}
     </ScrollView>
   );
 }
