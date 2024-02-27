@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
-import { Pressable, View} from "react-native";
-import {Picker} from '@react-native-picker/picker';
+import { Pressable } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -15,40 +15,40 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   // const [selectedLanguage, setSelectedLanguage] = useState('en');
 
-  useEffect(()=>{    
+  useEffect(() => {
     let x = document.cookie;
     const parts = x.split(`lang=`);
     if (parts.length === 2) {
-      let cLang = parts.pop().split(';').shift();
-      if (cLang == 'es') {
-        window.location.href = '/es';
+      let cLang = parts.pop().split(";").shift();
+      if (cLang == "es") {
+        window.location.href = "/es";
       }
-      if (cLang == 'id') {
-        window.location.href = '/id';
+      if (cLang == "id") {
+        window.location.href = "/id";
       }
-      if (cLang == 'el') {
-        window.location.href = '/el';
+      if (cLang == "el") {
+        window.location.href = "/el";
       }
     }
-      }, [])
+  }, []);
 
   const handleLangSelection = (itemValue, itemIndex) => {
-    if (itemIndex == 0){
-      document.cookie = 'lang=en;';
+    if (itemIndex == 0) {
+      document.cookie = "lang=en;";
     }
     if (itemIndex == 1) {
-      window.location.href = '/es';
-      document.cookie = 'lang=es;';
+      window.location.href = "/es";
+      document.cookie = "lang=es;";
     }
     if (itemIndex == 2) {
-      window.location.href = '/id';
-      document.cookie = 'lang=id;';
+      window.location.href = "/id";
+      document.cookie = "lang=id;";
     }
     if (itemIndex == 3) {
-      window.location.href = '/el';
-      document.cookie = 'lang=el;';
+      window.location.href = "/el";
+      document.cookie = "lang=el;";
     }
-  } 
+  };
   return (
     <Tabs
       screenOptions={
@@ -65,21 +65,22 @@ export default function TabLayout() {
           tabBarAccessibilityLabel: "Go to Homepage",
           tabBarIcon: () => <TabBarIcon name="home" color={"rebeccapurple"} />,
           tabBarLabelStyle: {
-            color: 'rebeccapurple',
+            color: "rebeccapurple",
           },
           headerRight: () => (
             <Picker
-              className='m-10'
+              className="m-10"
               selectedValue={0}
-              onValueChange={(itemValue, itemIndex) => 
+              onValueChange={(itemValue, itemIndex) =>
                 handleLangSelection(itemValue, itemIndex)
-              }>
+              }
+            >
               <Picker.Item label="English" value="en" />
               <Picker.Item label="Español" value="es" />
               <Picker.Item label="Indonesian" value="id" />
               <Picker.Item label="Ελληνικά" value="el" />
             </Picker>
-            ),
+          ),
         }}
       />
       <Tabs.Screen
@@ -87,9 +88,11 @@ export default function TabLayout() {
         options={{
           title: "Upload an Image",
           tabBarAccessibilityLabel: "Upload an Image",
-          tabBarIcon: ({ color }) => <TabBarIcon name="camera" color={'darkslategray'} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="camera" color={"darkslategray"} />
+          ),
           tabBarLabelStyle: {
-            color: 'darkslategray',
+            color: "darkslategray",
           },
           headerRight: () => (
             <Link href="/info" asChild>

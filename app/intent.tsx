@@ -1,12 +1,156 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "expo-router";
-import { Text, View, Pressable, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  Pressable,
+  ScrollView,
+  Image,
+  Dimensions,
+} from "react-native";
+import { FlashList } from "@shopify/flash-list"; // Import FlashList
 import { useRouter, useLocalSearchParams } from "expo-router";
 import Spinner from "react-native-loading-spinner-overlay";
 import { styled } from "nativewind";
 const StyledView = styled(View);
 const StyledText = styled(Text);
 const StyledScrollView = styled(ScrollView);
+const productsList = [
+  {
+    id: "1",
+    title: "Product A",
+    price: "$12.99",
+    image: "https://m.media-amazon.com/images/I/7164eFzyjrL._SL1338_.jpg",
+    keywords: "the quran",
+  },
+  {
+    id: "2",
+    title: "Snapple Peach Tea",
+    price: "$10.99",
+    image: "https://m.media-amazon.com/images/I/81CjXZYTngL._SL1500_.jpg",
+    keywords: "Bottled beverage",
+    url: "https://amzn.to/42SmMyY",
+  },
+  {
+    id: "3",
+    title: "Ice Purple Variety Pack",
+    price: "$10.43",
+    image: "https://m.media-amazon.com/images/I/81BU+xe4jcL._SL1500_.jpg",
+    keywords: "Bottled beverage",
+    url: "https://amzn.to/3SOp0uy",
+  },
+  {
+    id: "4",
+    title: "Jif Creamy Peanut Butter",
+    price: "$9.36",
+    image: "https://m.media-amazon.com/images/I/71iTSdDUkOL._SL1500_.jpg",
+    keywords: "Jif",
+    url: "https://amzn.to/48FhKY0",
+  },
+  {
+    id: "5",
+    title: "REESE'S Milk Chocolate",
+    price: "$9.07",
+    image: "https://m.media-amazon.com/images/I/71IZF9dzcDL._SL1500_.jpg",
+    keywords: "Peanut Butter Cups",
+    url: "https://amzn.to/3uFXac2",
+  },
+  {
+    id: "6",
+    title: "REESE'S PIECES",
+    price: "$15.48",
+    image: "https://m.media-amazon.com/images/I/716Gw-VFhLL._SL1500_.jpg",
+    keywords: "Reese",
+    url: "https://amzn.to/48we7Dq",
+  },
+  {
+    id: "7",
+    title: "Marshmallow Fluff",
+    price: "$6.10",
+    image: "https://m.media-amazon.com/images/I/61guZpnkxvL._SL1500_.jpg",
+    keywords: "Marshmallow",
+    url: "https://amzn.to/3SM6xyM",
+  },
+  {
+    id: "8",
+    title: "Nerds Rope Candy",
+    price: "$18.99",
+    image: "https://m.media-amazon.com/images/I/81fSz3NwAbL._SL1500_.jpg",
+    keywords: "Nerds",
+    url: "https://amzn.to/3V0K1Ff",
+  },
+  {
+    id: "9",
+    title: "Assorted Fruit Original",
+    price: "$6.65",
+    image: "https://m.media-amazon.com/images/I/91tPzLAi9IL._SL1500_.jpg",
+    keywords: "Mike",
+    url: "https://amzn.to/49OKbUd",
+  },
+  {
+    id: "10",
+    title: "Assorted Milk Chocolate",
+    price: "$19.12",
+    image: "https://m.media-amazon.com/images/I/71RerViY9aL._SL1500_.jpg",
+    keywords: "Chocolate",
+    url: "https://amzn.to/3OWLyIt",
+  },
+  {
+    id: "11",
+    title: "Tootsie Roll",
+    price: "$5.50",
+    image: "https://m.media-amazon.com/images/I/61VKgfJJ4iL._SL1000_.jpg",
+    keywords: "Tootsie",
+    url: "https://amzn.to/48yWqTV",
+  },
+  {
+    id: "12",
+    title: "Pop Tarts Variety Pack",
+    price: "$23.99",
+    image: "https://m.media-amazon.com/images/I/91OKwCJoi6L._SL1500_.jpg",
+    keywords: "Pop-Tarts",
+    url: "https://amzn.to/42SwyRu",
+  },
+  {
+    id: "13",
+    title: "Herr's Potato Chips",
+    price: "$11.99",
+    image: "https://m.media-amazon.com/images/I/51oQY97OVuL.jpg",
+    keywords: "Herr",
+    url: "https://amzn.to/3SUFbGT",
+  },
+];
+
+function product(query) {
+  let listOfProductsWQuery = [];
+  for (const product of productsList) {
+    const keys = product.keywords.split(",");
+    for (const key of keys) {
+      if (query.includes(key)) {
+        listOfProductsWQuery.push(product);
+        continue;
+      }
+    }
+  }
+  const productsSet = new Set(listOfProductsWQuery);
+  return [...productsSet];
+}
+
+const ProductRow = ({ item }) => {
+  return (
+    <View className="m-5 flex-row items-center">
+      <Pressable>
+        <Link href={item.url} asChild>
+          <Image source={item.image} className="w-24 h-28 rounded-md mr-4" />
+        </Link>
+      </Pressable>
+      <View>
+        <Text className="text-lg font-semibold mb-2">{item.title}</Text>
+        <Text className="text-gray-600">{item.price}</Text>
+      </View>
+    </View>
+  );
+};
 
 export default function Intent() {
   const [noResult, setNoResult] = useState(true);
@@ -34,8 +178,6 @@ export default function Intent() {
       canvasRef.current.width = imageWidth;
       canvasRef.current.height = imageHeight;
       ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
-      // setQueries([1,2,3]);
-      // setQueriesTwo([1,2,3]);
 
       upload(image);
     };
@@ -44,30 +186,47 @@ export default function Intent() {
   }, [image]);
 
   function makeButton(data) {
+    if (decodeURIComponent(data).includes("(")){
+      data = data.split("(")[0]
+    }
     const websearch = "https://result.websearch-via-camera.com/en/".concat(
       data
     );
     return (
-      <Pressable className="w-2/3 mt-5 mb-5 p-4 bg-blue-500 hover:bg-blue-700 text-white rounded-full font-bold py-2 px-4 inline-flex items-center">
-        <Link href={websearch} asChild>
-          <Text className="text-white">{data}</Text>
-        </Link>
-      </Pressable>
+      <StyledView className="w-2/3 mt-5 mb-5">
+        <Pressable className="p-4 bg-purple-700 hover:bg-purple-900 text-white rounded-full font-bold py-2 px-4 inline-flex items-center">
+          <Link href={websearch} asChild>
+            <Text className="text-white">{data}</Text>
+          </Link>
+        </Pressable>
+      </StyledView>
+    );
+  }
+  function _makeButton(data) {
+    if (decodeURIComponent(data).includes("(")){
+      data = data.split("(")[0]
+    }
+    const websearch = "https://result.websearch-via-camera.com/en/".concat(data);
+    return (
+      <StyledView className="w-2/3 mt-5 mb-5">
+        <Pressable className="p-4 bg-purple-700 hover:bg-purple-900  text-white rounded-full font-bold py-2 px-4 inline-flex items-center">
+          <Link href={websearch} asChild>
+            <Text className="text-white">{data}</Text>
+          </Link>
+        </Pressable>
+        <View>
+          <FlashList
+            data={product(data)}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => <ProductRow item={item} />}
+            horizontal
+            estimatedItemSize={10}
+          />
+        </View>
+      </StyledView>
     );
   }
 
-  function _makeButton(item) {
-    const websearch = "https://result.websearch-via-camera.com/en/".concat(
-      item
-    );
-    return (
-      <Link href={websearch} asChild>
-        <Pressable className="w-2/3 mt-5 mb-5 p-4 bg-blue-500 hover:bg-blue-700 text-white rounded-full font-bold py-2 px-4 inline-flex items-center">
-          <Text className="text-white">{item}</Text>
-        </Pressable>
-      </Link>
-    );
-  }
   const startOver = () => {
     return (
       <StyledView className="items-center">
@@ -79,12 +238,12 @@ export default function Intent() {
       </StyledView>
     );
   };
+
   function upload(image) {
     // let resized = resize();
     const url = `https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-2b706faa-8009-4af8-9ba2-0d52f5a1bed1/default/doVision`;
-
-    const url2 = `https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-2b706faa-8009-4af8-9ba2-0d52f5a1bed1/default/doVision2`;
-
+    const url3 = `https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-2b706faa-8009-4af8-9ba2-0d52f5a1bed1/default/doVision2`;
+    const url2 = `https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-2b706faa-8009-4af8-9ba2-0d52f5a1bed1/default/doVisionProduct`;
     Promise.all([
       fetch(url, {
         method: "POST",
@@ -106,15 +265,30 @@ export default function Intent() {
           mode: "cors",
         },
       }).then((response) => response.json()),
+      fetch(url3, {
+        method: "POST",
+        body: JSON.stringify({
+          base64: `${image}`,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          mode: "cors",
+        },
+      }).then((response) => response.json()),
     ])
       .then((data) => {
         // File uploaded successfully
         // console.log(data);
         console.log(data[0]);
         console.log(data[1]);
+        console.log(data[2]);
         router.push({
           pathname: "intent",
-          params: { queries: data[0], queriesTwo: data[1] },
+          params: {
+            queries: data[0],
+            queriesTwo: data[1],
+            queriesThree: data[2],
+          },
         });
         setSpinnerVisible(false);
         setNoResult(false);
@@ -123,31 +297,50 @@ export default function Intent() {
         setStatusMessage(
           "Error uploading this file. Try with a different image!"
         );
-        // setSpinnerVisible(false);
         // console.error("Error uploading the file:", error);
       });
   }
 
   if (params.queries) {
     let queries = params.queries.split(",");
-    console.log(queries);
-
     let queriesTwo = params.queriesTwo.split(",");
+
+    let queriesThree = null;
+    if (params.queriesThree) {
+      queriesThree = params.queriesThree.split(",");
+    }
+
+    const toRemoveSet = new Set(queriesThree);
+    queries = queries.filter((x) => !toRemoveSet.has(x));
+    queriesTwo = queriesTwo.filter((x) => !toRemoveSet.has(x));
+
     return (
       <StyledScrollView horizontal={false} className="flex-1 bg-white">
+      
+      {queriesThree && queriesThree.length > 0 && (
+          <StyledText className="m-5 text-2xl font-bold">
+            Products in the photo:
+          </StyledText>
+        )}
+        {queriesThree && queriesThree.length > 0 && (
+          <StyledView className="items-center">
+            {queriesThree.map(_makeButton, this)}
+          </StyledView>
+        )}
+
         {queries && queries.length > 0 && (
-          <StyledText className="m-5 text-l font-bold">
+          <StyledText className="m-5 text-2xl font-bold">
             Search Intents:
           </StyledText>
         )}
         {queries && queries.length > 0 && (
           <StyledView className="items-center">
-            {queries.map(_makeButton, this)}
+            {queries.map(makeButton, this)}
           </StyledView>
         )}
 
         {queriesTwo && queriesTwo.length > 0 && (
-          <StyledText className="m-5 text-l font-bold">
+          <StyledText className="m-5 text-2xl font-bold">
             Objects in the photo:
           </StyledText>
         )}
@@ -156,6 +349,7 @@ export default function Intent() {
             {queriesTwo.map(makeButton, this)}
           </StyledView>
         )}
+
         {((queriesTwo && queriesTwo.length > 0) ||
           (queries && queries.length > 0)) && (
           <StyledText className="m-5 text-l font-bold">

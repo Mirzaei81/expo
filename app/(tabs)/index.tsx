@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { ScrollView, Text, View, Pressable } from "react-native";
 import { Link } from "expo-router";
-
+import { ExternalLink } from "../../components/ExternalLink";
 import { styled } from "nativewind";
 import "../../assets/styles.css";
 const StyledView = styled(View);
@@ -36,9 +36,7 @@ export default function TabOneScreen() {
 
         <StyledView className="items-start">
           <StyledView className="flex justify-between m-5">
-            <StyledText className="text-sm m-2">
-              Upload an image.
-            </StyledText>
+            <StyledText className="text-sm m-2">Upload an image.</StyledText>
           </StyledView>
           <StyledView className="flex justify-between m-5">
             <StyledText className="text-sm m-2">
@@ -52,20 +50,26 @@ export default function TabOneScreen() {
           </StyledView>
         </StyledView>
 
-        <Link href="https://websearch-via-camera.com/privacy%20policy" asChild>
+        <ExternalLink
+          href="https://websearch-via-camera.com/privacy%20policy"
+          asChild
+        >
           <Pressable>
             <StyledText className="text-small font-bold text-blue-600 mt-8 mb-8">
               Privacy Policy
             </StyledText>
           </Pressable>
-        </Link>
-        <Link href="https://websearch-via-camera.com/result.html" asChild>
+        </ExternalLink>
+        <ExternalLink
+          href="https://websearch-via-camera.com/result.html"
+          asChild
+        >
           <Pressable>
             <StyledText className="text-small font-bold text-blue-600 mt-8 mb-8">
               Sitemap
             </StyledText>
           </Pressable>
-        </Link>
+        </ExternalLink>
       </StyledView>
     </StyledScrollView>
   );

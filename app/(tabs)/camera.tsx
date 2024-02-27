@@ -10,8 +10,7 @@ import {
 } from "react-native";
 // import { Camera } from 'expo-camera';
 import * as ImagePicker from "expo-image-picker";
-import Spinner from "react-native-loading-spinner-overlay";
-import { useRouter, useLocalSearchParams } from "expo-router";
+import { useRouter } from "expo-router";
 import { Link } from "expo-router";
 import { styled } from "nativewind";
 import "../../assets/styles.css";
@@ -131,6 +130,45 @@ export default function TabTwoScreen() {
   // }
 
   const presetImage = (height) => {
+    if (height == 667) {
+      router.push({
+        pathname: "intent",
+        params: {
+          queries: [
+            "Candy%20aisle%20in%20a%20grocery%20store",
+            "%20candy%20brands",
+            "American%20candy%20selection",
+            "International%20candies%20in%20a%20store",
+            "Variety%20of%20sweets%20in%20retail",
+            "Sweet%20snacks%20available%20for%20purchase",
+          ],
+          queriesTwo: [
+            "Reese%27s%20Peanut%20Butter%20Cups",
+            "Two%20jars%20of%20Jif%20Peanut%20Butter",
+            "A%20pack%20of%20Mike%20and%20Ike",
+            "Hostess%20Twinkies",
+            "Tootsie%20Roll",
+            "Pop-Tarts%20in%20multiple%20flavors",
+            "Almond%20Joy",
+            "Junior%20Mints",
+            "Packs%20of%20Spree%20candy",
+          ],
+          queriesThree: [
+            "Bottled%20beverages%20%28Various%20flavors%29",
+            "Reese%27s%20Peanut%20Butter%20Cups",
+            "Reese%27s%20Pieces",
+            "Jif%20Peanut%20Butter",
+            "Marshmallow%20fluff%20spread",
+            "Nerds%20Candy%20%28Various%20flavors%29",
+            "Mike%20and%20Ike%20Candy",
+            "Chocolate%20bars%20%28Various%20brands%29",
+            "Tootsie%20Roll",
+            "Pop-Tarts",
+            "Herr%27s%20flavored%20snacks",
+          ],
+        },
+      });
+    }
     if (height == 750) {
       router.push({
         pathname: "intent",
@@ -225,10 +263,21 @@ export default function TabTwoScreen() {
             Pick an image from the gallery or try one of these:
           </Text>
           <ScrollView>
-            <TouchableOpacity
-              style={{ marginBottom: 20 }}
-              onPress={() => presetImage(281)}
-            >
+            <TouchableOpacity className="m-5" onPress={() => presetImage(667)}>
+              <Image
+                style={{
+                  margin: "auto",
+                  width: 500,
+                  height: 667,
+                  maxWidth: "100%",
+                  maxHeight: 667,
+                }}
+                source={{
+                  uri: "https://websearch-via-camera.com/camera/store.jpeg",
+                }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity className="m-5" onPress={() => presetImage(281)}>
               <Image
                 style={{
                   margin: "auto",
@@ -243,10 +292,7 @@ export default function TabTwoScreen() {
                 }}
               />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={{ marginBottom: 20 }}
-              onPress={() => presetImage(306)}
-            >
+            <TouchableOpacity className="m-5" onPress={() => presetImage(306)}>
               <Image
                 style={{
                   margin: "auto",
@@ -261,10 +307,7 @@ export default function TabTwoScreen() {
                 }}
               />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={{ marginBottom: 20 }}
-              onPress={() => presetImage(750)}
-            >
+            <TouchableOpacity className="m-5" onPress={() => presetImage(750)}>
               <Image
                 style={{
                   margin: "auto",

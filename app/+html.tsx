@@ -35,7 +35,6 @@ export default function Root({ children }: { children: React.ReactNode }) {
           name="description"
           content="Find what you’re looking for with just an image."
         />
-        <title>Websearch via camera</title>
 
         {/* 
           Disable body scrolling on web. This makes ScrollView components work closer to how they do on native. 
