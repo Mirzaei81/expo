@@ -14,6 +14,7 @@ import { useRouter } from "expo-router";
 import { Link } from "expo-router";
 import { styled } from "nativewind";
 import "../../assets/styles.css";
+
 const StyledView = styled(View);
 
 export default function TabTwoScreen() {
@@ -46,7 +47,7 @@ export default function TabTwoScreen() {
         ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
         setImage(null);
         router.push({
-          pathname: "intent",
+          pathname: "Select",
           params: { id: image, width: imageWidth, height: imageHeight },
         });
         //upload();
@@ -132,7 +133,7 @@ export default function TabTwoScreen() {
   const presetImage = (height) => {
     if (height == 667) {
       router.push({
-        pathname: "intent",
+        pathname: "Select",
         params: {
           queries: [
             "Candy%20aisle%20in%20a%20grocery%20store",
@@ -166,12 +167,33 @@ export default function TabTwoScreen() {
             "Pop-Tarts",
             "Herr%27s%20flavored%20snacks",
           ],
+          queriesFour: [
+            "Snack%20Haven",
+            "The%20Treat%20Treasury",
+            "Confection%20Collection",
+            "Sweets%20and%20Sips%20Emporium",
+            "Candy%20Lane%20Pantry",
+            "Munchables%20Market",
+            "Gourmet%20Goodies%20Gallery",
+            "Nibbles%20and%20Nectar%20Nook",
+            "Choco-Corner",
+            "The%20Sugar%20Shelf",
+            "Delightful%20Bites%20Boutique",
+            "Flavor%20Fest%20Fiesta",
+            "Luscious%20Layers%20Alcove",
+            "Craving%20Curator",
+            "Yummy%20Yard",
+            "Sugar%20Rush%20Shelves",
+            "Delectable%20Delights%20Display",
+            "Munchie%20Maze",
+            "The%20Happiness%20Hub",
+          ],
         },
       });
     }
     if (height == 750) {
       router.push({
-        pathname: "intent",
+        pathname: "Select",
         params: {
           queries: [
             "Avocado toast recipe",
@@ -192,14 +214,14 @@ export default function TabTwoScreen() {
             "Fresh cherry tomatoes",
             "Wooden cutting board",
             "Sprinkle of pepper and spices around the board",
-            "Sprigs of dill",
+            "Springs of dill",
           ],
         },
       });
     }
     if (height == 281) {
       router.push({
-        pathname: "intent",
+        pathname: "Select",
         params: {
           queries: [
             "Sea otter with pup",
@@ -213,12 +235,33 @@ export default function TabTwoScreen() {
             "A baby sea otter",
             "Water with ripples",
           ],
+          queriesFour: [
+            "Tranquil%20Waters%3A%20The%20Otter%20Embrace",
+            "Whiskered%20Lullaby",
+            "The%20Floating%20Snuggle",
+            "Aquatic%20Affection",
+            "Sea%20Otter%20Serenity",
+            "Nautical%20Naptime",
+            "Marine%20Maternity",
+            "Harbor%20Hug",
+            "Otters%27%20Oasis",
+            "The%20Fur-Floater%20Duo%20",
+            "Kelp%20Cradle%20Lullaby",
+            "Buoyant%20Bonding",
+            "Curled%20in%20Comfort",
+            "The%20Cozy%20Current",
+            "Tender%20Tides",
+            "Saltwater%20Siesta",
+            "Algae%20Ascot%20Slumber",
+            "Gentle%20Gaze%20upon%20the%20Waves",
+            "Otterly%20Adorable",
+          ],
         },
       });
     }
     if (height == 306) {
       router.push({
-        pathname: "intent",
+        pathname: "Select",
         params: {
           queries: [
             "Ten Commandments in the Bible",
@@ -263,21 +306,34 @@ export default function TabTwoScreen() {
             Pick an image from the gallery or try one of these:
           </Text>
           <ScrollView>
-            <TouchableOpacity className="m-5" onPress={() => presetImage(667)}>
-              <Image
-                style={{
-                  margin: "auto",
-                  width: 500,
-                  height: 667,
-                  maxWidth: "100%",
-                  maxHeight: 667,
-                }}
-                source={{
-                  uri: "https://websearch-via-camera.com/camera/store.jpeg",
-                }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity className="m-5" onPress={() => presetImage(281)}>
+            <ScrollView horizontal={true} style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                className="w-1/2"
+                onPress={() => presetImage(667)}
+              >
+                <Image
+                  className="w-64 h-full	"
+                  source={{
+                    uri: "https://websearch-via-camera.com/camera/store.jpeg",
+                  }}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                className="w-1/2"
+                onPress={() => presetImage(750)}
+              >
+                <Image
+                  className="w-64 h-96"
+                  source={{
+                    uri:
+                      "https://websearch-via-camera.com/camera/mlkua19iskzugi1u27ch.jpeg",
+                  }}
+                />
+              </TouchableOpacity>
+            </ScrollView>
+
+            <TouchableOpacity onPress={() => presetImage(281)}>
               <Image
                 style={{
                   margin: "auto",
@@ -292,7 +348,8 @@ export default function TabTwoScreen() {
                 }}
               />
             </TouchableOpacity>
-            <TouchableOpacity className="m-5" onPress={() => presetImage(306)}>
+
+            <TouchableOpacity onPress={() => presetImage(306)}>
               <Image
                 style={{
                   margin: "auto",
@@ -304,21 +361,6 @@ export default function TabTwoScreen() {
                 source={{
                   uri:
                     "https://websearch-via-camera.com/camera/ebj8nlazyhgz3ucs6e6n.jpeg",
-                }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity className="m-5" onPress={() => presetImage(750)}>
-              <Image
-                style={{
-                  margin: "auto",
-                  width: 500,
-                  height: 750,
-                  maxWidth: "100%",
-                  maxHeight: 750,
-                }}
-                source={{
-                  uri:
-                    "https://websearch-via-camera.com/camera/mlkua19iskzugi1u27ch.jpeg",
                 }}
               />
             </TouchableOpacity>

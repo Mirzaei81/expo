@@ -84,10 +84,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="camera"
+        name="upload_a_picture"
         options={{
-          title: "Upload an Image",
-          tabBarAccessibilityLabel: "Upload an Image",
+          title: "Upload a Picture",
+          tabBarAccessibilityLabel: "Upload a Picture",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="camera" color={"darkslategray"} />
           ),

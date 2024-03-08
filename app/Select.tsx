@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link } from "expo-router";
 import {
   Text,
@@ -6,15 +7,19 @@ import {
   Pressable,
   ScrollView,
   Image,
-  Dimensions,
+  useWindowDimensions,
 } from "react-native";
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { FlashList } from "@shopify/flash-list"; // Import FlashList
 import { useRouter, useLocalSearchParams } from "expo-router";
 import Spinner from "react-native-loading-spinner-overlay";
 import { styled } from "nativewind";
+import "../assets/styles.css";
+
 const StyledView = styled(View);
 const StyledText = styled(Text);
 const StyledScrollView = styled(ScrollView);
+
 const productsList = [
   {
     id: "1",
@@ -121,6 +126,18 @@ const productsList = [
   },
 ];
 
+const getTabBarIcon = (props) => {
+  const { route } = props;
+
+  if (route.key === "general") {
+    return <FontAwesome name="search" size={20} />;
+  } else if (route.key === "specifics") {
+    return <FontAwesome name="object-ungroup" size={20} />;
+  } else {
+    return <FontAwesome name="heart" size={20} />;
+  }
+};
+
 function product(query) {
   let listOfProductsWQuery = [];
   for (const product of productsList) {
@@ -164,7 +181,14 @@ export default function Intent() {
   const image = params.id;
   const imageWidth = params.width;
   const imageHeight = params.height;
+  const layout = useWindowDimensions();
 
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: "general", title: "General", icon: "camera" },
+    { key: "specifics", title: "Specifics", icon: "albums" },
+    { key: "creative", title: "Creative", icon: "camera" },
+  ]);
   useEffect(() => {
     if (!image)
       return () => {
@@ -186,27 +210,37 @@ export default function Intent() {
   }, [image]);
 
   function makeButton(data) {
-    if (decodeURIComponent(data).includes("(")){
-      data = data.split("(")[0]
+    if (decodeURIComponent(data).includes("(")) {
+      data = data.split("(")[0];
     }
     const websearch = "https://result.websearch-via-camera.com/en/".concat(
       data
     );
     return (
       <StyledView className="w-2/3 mt-5 mb-5">
-        <Pressable className="p-4 bg-purple-700 hover:bg-purple-900 text-white rounded-full font-bold py-2 px-4 inline-flex items-center">
-          <Link href={websearch} asChild>
-            <Text className="text-white">{data}</Text>
-          </Link>
+        <Pressable
+          onPress={() =>
+            router.push({
+              pathname: "Results",
+              params: {
+                query: data,
+              },
+            })
+          }
+          className="p-4 bg-purple-700 hover:bg-purple-900 text-white rounded-full font-bold py-2 px-4 inline-flex items-center"
+        >
+          <Text className="text-white">{data}</Text>
         </Pressable>
       </StyledView>
     );
   }
   function _makeButton(data) {
-    if (decodeURIComponent(data).includes("(")){
-      data = data.split("(")[0]
+    if (decodeURIComponent(data).includes("(")) {
+      data = data.split("(")[0];
     }
-    const websearch = "https://result.websearch-via-camera.com/en/".concat(data);
+    const websearch = "https://result.websearch-via-camera.com/en/".concat(
+      data
+    );
     return (
       <StyledView className="w-2/3 mt-5 mb-5">
         <Pressable className="p-4 bg-purple-700 hover:bg-purple-900  text-white rounded-full font-bold py-2 px-4 inline-flex items-center">
@@ -244,6 +278,8 @@ export default function Intent() {
     const url = `https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-2b706faa-8009-4af8-9ba2-0d52f5a1bed1/default/doVision`;
     const url3 = `https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-2b706faa-8009-4af8-9ba2-0d52f5a1bed1/default/doVision2`;
     const url2 = `https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-2b706faa-8009-4af8-9ba2-0d52f5a1bed1/default/doVisionProduct`;
+    const url4 = `https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-2b706faa-8009-4af8-9ba2-0d52f5a1bed1/default/doVisionName`;
+
     Promise.all([
       fetch(url, {
         method: "POST",
@@ -275,19 +311,35 @@ export default function Intent() {
           mode: "cors",
         },
       }).then((response) => response.json()),
+      fetch(url4, {
+        method: "POST",
+        body: JSON.stringify({
+          base64: `${image}`,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          mode: "cors",
+        },
+      }).then((response) => response.json()),
     ])
       .then((data) => {
         // File uploaded successfully
         // console.log(data);
+        console.log("search intent");
         console.log(data[0]);
+        console.log("objects in the photo");
         console.log(data[1]);
+        console.log("products");
         console.log(data[2]);
+        console.log("name");
+        console.log(data[3]);
         router.push({
-          pathname: "intent",
+          pathname: "Select",
           params: {
             queries: data[0],
             queriesTwo: data[1],
             queriesThree: data[2],
+            queriesFour: data[3],
           },
         });
         setSpinnerVisible(false);
@@ -301,33 +353,27 @@ export default function Intent() {
       });
   }
 
-  if (params.queries) {
-    let queries = params.queries.split(",");
-    let queriesTwo = params.queriesTwo.split(",");
-
+  if (
+    params.queries ||
+    params.queriesTwo ||
+    params.queriesThree ||
+    params.queriesFour
+  ) {
+    let queries = null;
+    if (params.queries) queries = params.queries.split(",");
+    let queriesTwo = null;
+    if (params.queriesTwo) queriesTwo = params.queriesTwo.split(",");
     let queriesThree = null;
-    if (params.queriesThree) {
-      queriesThree = params.queriesThree.split(",");
-    }
+    if (params.queriesThree) queriesThree = params.queriesThree.split(",");
+    let queriesFour = null;
+    if (params.queriesFour) queriesFour = params.queriesFour.split(",");
 
     const toRemoveSet = new Set(queriesThree);
     queries = queries.filter((x) => !toRemoveSet.has(x));
     queriesTwo = queriesTwo.filter((x) => !toRemoveSet.has(x));
 
-    return (
+    const GeneralRoute = () => (
       <StyledScrollView horizontal={false} className="flex-1 bg-white">
-      
-      {queriesThree && queriesThree.length > 0 && (
-          <StyledText className="m-5 text-2xl font-bold">
-            Products in the photo:
-          </StyledText>
-        )}
-        {queriesThree && queriesThree.length > 0 && (
-          <StyledView className="items-center">
-            {queriesThree.map(_makeButton, this)}
-          </StyledView>
-        )}
-
         {queries && queries.length > 0 && (
           <StyledText className="m-5 text-2xl font-bold">
             Search Intents:
@@ -339,38 +385,119 @@ export default function Intent() {
           </StyledView>
         )}
 
-        {queriesTwo && queriesTwo.length > 0 && (
-          <StyledText className="m-5 text-2xl font-bold">
-            Objects in the photo:
+        {queries && queries.length > 0 && (
+          <StyledText className="m-5 text-l font-bold">
+            Want to restart?
           </StyledText>
         )}
-        {queriesTwo && queriesTwo.length > 0 && (
+        {queries && queries.length > 0 && startOver()}
+        {!queries && (
+          <View>
+            <StyledText className="p-5">No results for this image. </StyledText>
+            {startOver()}
+          </View>
+        )}
+      </StyledScrollView>
+    );
+
+    const SpecificsRoute = () => (
+      <StyledScrollView horizontal={false} className="flex-1 bg-white">
+        {Array.isArray(queriesThree) && queriesThree.length > 0 && (
+          <StyledText className="m-5 text-2xl font-bold">
+            Products in the picture:
+          </StyledText>
+        )}
+        {Array.isArray(queriesThree) && queriesThree.length > 0 && (
+          <StyledView className="items-center">
+            {queriesThree.map(_makeButton, this)}
+          </StyledView>
+        )}
+        {Array.isArray(queriesTwo) && queriesTwo.length > 0 && (
+          <StyledText className="m-5 text-2xl font-bold">
+            Objects in the picture:
+          </StyledText>
+        )}
+        {Array.isArray(queriesTwo) && queriesTwo.length > 0 && (
           <StyledView className="items-center">
             {queriesTwo.map(makeButton, this)}
           </StyledView>
         )}
 
-        {((queriesTwo && queriesTwo.length > 0) ||
-          (queries && queries.length > 0)) && (
+        {((Array.isArray(queriesTwo) && queriesTwo.length > 0) ||
+          (Array.isArray(queriesThree) && queriesThree.length > 0)) && (
           <StyledText className="m-5 text-l font-bold">
             Want to restart?
           </StyledText>
         )}
-        {((queriesTwo && queriesTwo.length > 0) ||
-          (queries && queries.length > 0)) &&
+        {((Array.isArray(queriesTwo) && queriesTwo.length > 0) ||
+          (Array.isArray(queriesThree) && queriesThree.length > 0)) &&
           startOver()}
-        {queries &&
-          queries.length == 0 &&
-          queriesTwo &&
-          queriesTwo.length == 0 && (
-            <View>
-              <StyledText className="p-5">
-                No results for this image.{" "}
-              </StyledText>
-              {startOver()}
-            </View>
-          )}
+        {!Array.isArray(queriesTwo) && !Array.isArray(queriesThree) && (
+          <View>
+            <StyledText className="p-5">No results for this image. </StyledText>
+            {startOver()}
+          </View>
+        )}
       </StyledScrollView>
+    );
+
+    const CreativeRoute = () => (
+      <StyledScrollView horizontal={false} className="flex-1 bg-white">
+        {Array.isArray(queriesFour) && queriesFour.length > 0 && (
+          <StyledText className="m-5 text-2xl font-bold">
+            Creative names for this picture:
+          </StyledText>
+        )}
+        {Array.isArray(queriesFour) && queriesFour.length > 0 && (
+          <StyledView className="items-center">
+            {queriesFour.map(makeButton, this)}
+          </StyledView>
+        )}
+
+        {Array.isArray(queriesFour) && queriesFour.length > 0 && (
+          <StyledText className="m-5 text-l font-bold">
+            Want to restart?
+          </StyledText>
+        )}
+        {Array.isArray(queriesFour) && queriesFour.length > 0 && startOver()}
+        {!Array.isArray(queriesFour) && (
+          <View>
+            <StyledText className="p-5">
+              No creative results for this image.{" "}
+            </StyledText>
+            {startOver()}
+          </View>
+        )}
+      </StyledScrollView>
+    );
+
+    const renderScene = SceneMap({
+      general: GeneralRoute,
+      specifics: SpecificsRoute,
+      creative: CreativeRoute,
+    });
+    const renderTabBar = (props) => {
+      return (
+        <TabBar
+          {...props}
+          renderLabel={({ focused, route }) => {
+            return <Text>{route.title}</Text>;
+          }}
+          renderIcon={(props) => getTabBarIcon(props)}
+          style={{ backgroundColor: "#ffffff" }}
+          indicatorStyle={{ backgroundColor: "rgb(126, 34, 206)" }}
+        />
+      );
+    };
+
+    return (
+      <TabView
+        renderTabBar={renderTabBar}
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
+      />
     );
   }
   console.log(params.queries);
