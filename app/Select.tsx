@@ -507,7 +507,7 @@ export default function Intent() {
     <View>
       {image && noResult && (
         <View>
-          <Spinner visible={spinnerVisible} />
+          <Spinner color={"purple"} visible={spinnerVisible} />
           <StyledText className="p-5">{statusMessage} </StyledText>
           <PureCanvas ref={canvasRef} />
         </View>
