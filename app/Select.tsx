@@ -279,6 +279,7 @@ export default function Intent() {
     const url3 = `https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-2b706faa-8009-4af8-9ba2-0d52f5a1bed1/default/doVision2`;
     const url2 = `https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-2b706faa-8009-4af8-9ba2-0d52f5a1bed1/default/doVisionProduct`;
     const url4 = `https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-2b706faa-8009-4af8-9ba2-0d52f5a1bed1/default/doVisionName`;
+    const url5 = `https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-2b706faa-8009-4af8-9ba2-0d52f5a1bed1/default/doVisionBook`;
 
     Promise.all([
       fetch(url, {
@@ -288,7 +289,6 @@ export default function Intent() {
         }),
         headers: {
           "Content-Type": "application/json",
-          mode: "cors",
         },
       }).then((response) => response.json()),
       fetch(url2, {
@@ -298,7 +298,6 @@ export default function Intent() {
         }),
         headers: {
           "Content-Type": "application/json",
-          mode: "cors",
         },
       }).then((response) => response.json()),
       fetch(url3, {
@@ -308,7 +307,6 @@ export default function Intent() {
         }),
         headers: {
           "Content-Type": "application/json",
-          mode: "cors",
         },
       }).then((response) => response.json()),
       fetch(url4, {
@@ -318,7 +316,15 @@ export default function Intent() {
         }),
         headers: {
           "Content-Type": "application/json",
-          mode: "cors",
+        },
+      }).then((response) => response.json()),
+      fetch(url5, {
+        method: "POST",
+        body: JSON.stringify({
+          base64: `${image}`,
+        }),
+        headers: {
+          "Content-Type": "application/json",
         },
       }).then((response) => response.json()),
     ])
@@ -333,6 +339,8 @@ export default function Intent() {
         console.log(data[2]);
         console.log("name");
         console.log(data[3]);
+        console.log("books");
+        console.log(data[4]);
         router.push({
           pathname: "Select",
           params: {
@@ -340,6 +348,7 @@ export default function Intent() {
             queriesTwo: data[1],
             queriesThree: data[2],
             queriesFour: data[3],
+            queriesFive: data[4],
           },
         });
         setSpinnerVisible(false);
@@ -347,7 +356,7 @@ export default function Intent() {
       })
       .catch((error) => {
         setStatusMessage(
-          "Error uploading this file. Try with a different image!"
+          "Error uploading this file. Try with a different picture!"
         );
         // console.error("Error uploading the file:", error);
       });
@@ -357,7 +366,8 @@ export default function Intent() {
     params.queries ||
     params.queriesTwo ||
     params.queriesThree ||
-    params.queriesFour
+    params.queriesFour ||
+    params.queriesFive
   ) {
     let queries = null;
     if (params.queries) queries = params.queries.split(",");
@@ -367,33 +377,47 @@ export default function Intent() {
     if (params.queriesThree) queriesThree = params.queriesThree.split(",");
     let queriesFour = null;
     if (params.queriesFour) queriesFour = params.queriesFour.split(",");
+    let queriesFive = null;
+    if (params.queriesFive) queriesFive = params.queriesFive.split(",");
 
-    const toRemoveSet = new Set(queriesThree);
-    queries = queries.filter((x) => !toRemoveSet.has(x));
-    queriesTwo = queriesTwo.filter((x) => !toRemoveSet.has(x));
+    var toRemoveSet = new Set(queriesThree);
+    if (queries) queries = queries.filter((x) => !toRemoveSet.has(x));
+    if (queriesTwo) queriesTwo = queriesTwo.filter((x) => !toRemoveSet.has(x));
+    if (queriesFive) {
+      toRemoveSet = new Set(queriesFive);
+      if (queries) queries = queries.filter((x) => !toRemoveSet.has(x));
+      if (queriesTwo)
+        queriesTwo = queriesTwo.filter((x) => !toRemoveSet.has(x));
+      if (queriesThree)
+        queriesThree = queriesThree.filter((x) => !toRemoveSet.has(x));
+      if (queriesFour)
+        queriesFour = queriesFour.filter((x) => !toRemoveSet.has(x));
+    }
 
     const GeneralRoute = () => (
       <StyledScrollView horizontal={false} className="flex-1 bg-white">
-        {queries && queries.length > 0 && (
+        {Array.isArray(queries) && queries.length > 0 && (
           <StyledText className="m-5 text-2xl font-bold">
             Search Intents:
           </StyledText>
         )}
-        {queries && queries.length > 0 && (
+        {Array.isArray(queries) && queries.length > 0 && (
           <StyledView className="items-center">
             {queries.map(makeButton, this)}
           </StyledView>
         )}
 
-        {queries && queries.length > 0 && (
+        {Array.isArray(queries) && queries.length > 0 && (
           <StyledText className="m-5 text-l font-bold">
             Want to restart?
           </StyledText>
         )}
-        {queries && queries.length > 0 && startOver()}
+        {Array.isArray(queries) && queries.length > 0 && startOver()}
         {!queries && (
           <View>
-            <StyledText className="p-5">No results for this image. </StyledText>
+            <StyledText className="p-5">
+              No results for this picture.{" "}
+            </StyledText>
             {startOver()}
           </View>
         )}
@@ -402,6 +426,17 @@ export default function Intent() {
 
     const SpecificsRoute = () => (
       <StyledScrollView horizontal={false} className="flex-1 bg-white">
+        {Array.isArray(queriesFive) && queriesFive.length > 0 && (
+          <StyledText className="m-5 text-2xl font-bold">
+            Books in the picture:
+          </StyledText>
+        )}
+        {Array.isArray(queriesFive) && queriesFive.length > 0 && (
+          <StyledView className="items-center">
+            {queriesFive.map(makeButton, this)}
+          </StyledView>
+        )}
+
         {Array.isArray(queriesThree) && queriesThree.length > 0 && (
           <StyledText className="m-5 text-2xl font-bold">
             Products in the picture:
@@ -434,7 +469,9 @@ export default function Intent() {
           startOver()}
         {!Array.isArray(queriesTwo) && !Array.isArray(queriesThree) && (
           <View>
-            <StyledText className="p-5">No results for this image. </StyledText>
+            <StyledText className="p-5">
+              No results for this picture.{" "}
+            </StyledText>
             {startOver()}
           </View>
         )}
@@ -463,7 +500,7 @@ export default function Intent() {
         {!Array.isArray(queriesFour) && (
           <View>
             <StyledText className="p-5">
-              No creative results for this image.{" "}
+              No creative results for this picture.{" "}
             </StyledText>
             {startOver()}
           </View>

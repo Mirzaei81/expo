@@ -18,7 +18,7 @@ export default function TabOneScreen() {
     >
       <StyledView className="justify-center">
         <StyledText className="text-3xl m-12">
-          Find what you’re looking for with just an image.
+          Find what you’re looking for with just a picture.
         </StyledText>
       </StyledView>
 
@@ -36,11 +36,11 @@ export default function TabOneScreen() {
 
         <StyledView className="items-start">
           <StyledView className="flex justify-between m-5">
-            <StyledText className="text-sm m-2">Upload an image.</StyledText>
+            <StyledText className="text-sm m-2">Upload a picture.</StyledText>
           </StyledView>
           <StyledView className="flex justify-between m-5">
             <StyledText className="text-sm m-2">
-              Explore the web with Search Intents based on the image.
+              Explore the web with Search Intents based on the picture.
             </StyledText>
           </StyledView>
           <StyledView className="flex justify-between m-5">

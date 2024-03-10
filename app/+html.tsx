@@ -23,17 +23,18 @@ export default function Root({ children }: { children: React.ReactNode }) {
         />
         <meta
           property="og:description"
-          content="Find what you’re looking for with just an image. Simply take a picture or upload one, and get instant and accurate search results. It's searching, reinvented."
+          content="Find what you’re looking for with just a picture. Simply take a picture or upload one, and get accurate search results. It's searching, reinvented."
         />
         <meta property="og:site_name" content="WebSearch Via Camera" />
         <meta property="og:locale" content="en_US" />
+        <meta property="fb:app_id" content="382707904455456" />
 
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width" />
 
         <meta
           name="description"
-          content="Find what you’re looking for with just an image."
+          content="Find what you’re looking for with just a picture."
         />
 
         {/* 

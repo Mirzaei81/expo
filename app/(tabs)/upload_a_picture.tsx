@@ -216,6 +216,28 @@ export default function TabTwoScreen() {
             "Sprinkle of pepper and spices around the board",
             "Springs of dill",
           ],
+          queriesFour: [
+            "%22Avocado%20Toast%20Elegance%22",
+            "%22Morning%20Delight%20with%20Avocado%22",
+            "%22Brunch%20Bliss%20Board%22",
+            "%22Avocado%20Symphony%20with%20a%20Side%20of%20Eggs%22",
+            "%22Garden%20Fresh%20Avocado%20Encounter%22",
+            "%22The%20Avo-Egg%20Toast%20Experience%22",
+            "%22Rustic%20Avocado%20Charm%22",
+            "%22Sunny%20Avocado%20Creation%22",
+            "%22Tomato-Topped%20Avocado%20Dreams%22",
+            "%22The%20Green%20Smash%20Delicacy%22",
+            "%22Pepper-Sprinkled%20Avocado%20Rhapsody%22",
+            "%22Egg%20%26%20Avocado%20Artistry%22",
+            "%22Fresh%20Fare%20on%20Wooden%20Flair%22",
+            "%22Avocado%20Toast%20Temptations%22",
+            "%22Wholesome%20Avo-Toast%20Indulgence%22",
+            "%22The%20Avocado%20Brunch%20Palette%22",
+            "%22Cherry%20Tomato%20Kissed%20Avocado%22",
+            "%22Hearty%20Avocado%20%26%20Egg%20Canvas%22",
+            "%22A%20Sprinkle%20of%20Delight%20with%20Avocado%22",
+            "%22From%20the%20Kitchen%20Garden%3A%20Avocado%20%26%20Egg%20Toast%22",
+          ],
         },
       });
     }
@@ -279,6 +301,53 @@ export default function TabTwoScreen() {
             "A printed page from bible.",
             "Text, specifically what appears to be a numbered list of the Ten Commandments from the Bible.",
           ],
+          queriesFive: ["The Bible"],
+        },
+      });
+    }
+    if (height == 500) {
+      router.push({
+        pathname: "Select",
+        params: {
+          queries: [
+            "Interior%20design%20book%20display",
+            "Minimalist%20book%20arrangement",
+            "Inspirational%20book%20titles",
+            "Modern%20book%20cover%20designs",
+            "Book%20photography%20ideas",
+            "White%20and%20blue%20color%20scheme%20in%20decor",
+          ],
+          queriesTwo: [
+            "Three%20books%20stacked%20on%20top%20of%20each%20other.",
+            "A%20portion%20of%20a%20blue%20wall%20in%20the%20background.",
+            "A%20white%20tabletop%20or%20shelf%20on%20which%20the%20books%20are%20placed.",
+            "A%20part%20of%20a%20decorative%20object%20to%20the%20left%20of%20the%20books%2C%20which%20appears%20to%20be%20a%20glass%20or%20transparent%20lamp%20with%20a%20spherical%20section%20visible.",
+          ],
+          queriesThree: [
+            "%22Less%20is%20More%22%20by%20Ludwig%20Mies%20van%20der%20Rohe",
+            "%22Be%20True.%20Be%20You.%22",
+          ],
+          queriesFour: [
+            "%22The%20Minimalist%20Motto%22",
+            "%22Simplicity%20and%20Self%22",
+            "%22Promises%20on%20the%20Shelf%22",
+            "%22Essence%20of%20Identity%22",
+            "%22A%20Trio%20of%20Truths%22",
+            "%22Decluttering%20the%20Soul%22",
+            "%22Chapters%20of%20Clarity%22",
+            "%22Narratives%20of%20Nuance%22",
+            "%22Books%20of%20Being%22",
+            "%22Lifelong%20Learning%20Stack%22",
+            "%22The%20Subtle%20Art%20of%20Being%22",
+            "%22Literary%20Layers%20of%20Self%22",
+            "%22Stacked%20Wisdom%22",
+            "%22White%20Spine%20Wisdom%22",
+          ],
+          queriesFive: [
+            "%22Less%20Is%20More%22",
+            "%22Be%20True.%20Be%20You.%22",
+            "%22Promise%20To%20Keep%22",
+          ],
         },
       });
     }
@@ -288,7 +357,7 @@ export default function TabTwoScreen() {
     <ScrollView
       horizontal={false}
       contentContainerStyle={{ flexGrow: 1 }}
-      style={styles.container}
+      className="bg-white flex-1 content-center"
     >
       {!image && (
         <View
@@ -299,11 +368,11 @@ export default function TabTwoScreen() {
             onPress={() => pickImage()}
             className="w-2/3 bg-blue-500 hover:bg-blue-700 text-white rounded-full font-bold py-2 px-4 inline-flex items-center"
           >
-            <Text className="text-white">Pick An Image From Gallery</Text>
+            <Text className="text-white">Pick A Picture From Gallery</Text>
           </Pressable>
 
           <Text style={{ margin: "auto", padding: 20 }} className="text-2xl">
-            Pick an image from the gallery or try one of these:
+            Pick a picture from the gallery or try one of these:
           </Text>
           <ScrollView>
             <ScrollView horizontal={true} style={{ flexDirection: "row" }}>
@@ -349,21 +418,32 @@ export default function TabTwoScreen() {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => presetImage(306)}>
-              <Image
-                style={{
-                  margin: "auto",
-                  width: 500,
-                  height: 306,
-                  maxWidth: "100%",
-                  maxHeight: 306,
-                }}
-                source={{
-                  uri:
-                    "https://websearch-via-camera.com/camera/ebj8nlazyhgz3ucs6e6n.jpeg",
-                }}
-              />
-            </TouchableOpacity>
+            <ScrollView horizontal={true} className="flex-row	 mb-1 ">
+              <TouchableOpacity
+                className="w-1/2"
+                onPress={() => presetImage(500)}
+              >
+                <Image
+                  className="w-64 h-64"
+                  source={{
+                    uri: "https://websearch-via-camera.com/camera/books.jpeg",
+                  }}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                className="w-1/2"
+                onPress={() => presetImage(306)}
+              >
+                <Image
+                  className="w-64 h-64"
+                  source={{
+                    uri:
+                      "https://websearch-via-camera.com/camera/ebj8nlazyhgz3ucs6e6n.jpeg",
+                  }}
+                />
+              </TouchableOpacity>
+            </ScrollView>
           </ScrollView>
         </View>
       )}
@@ -371,20 +451,3 @@ export default function TabTwoScreen() {
     </ScrollView>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignContent: "center",
-  },
-  camera: {
-    flex: 1,
-    aspectRatio: 1,
-  },
-  cameraContainer: {
-    flex: 1,
-    flexDirection: "column",
-  },
-  button: {
-    flex: 1,
-  },
-});
