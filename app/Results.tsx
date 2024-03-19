@@ -82,45 +82,6 @@ export default function ResultsScreen() {
       });
   }, []);
 
-  const sample = {
-    websites: [
-      {
-        url: "https://openai.com/gpt-3/",
-        title: "GPT-3: Language Models are Few-Shot Learners",
-        snippet:
-          "GPT-3, the third version of the Generative Pretrained Transformer language model, is a powerful tool for natural language processing tasks. With over 175 billion parameters, it has been used for various applications including language translation, summarization, and code generation.",
-      },
-      {
-        url:
-          "https://venturebeat.com/2022/03/29/openais-gpt-3-other-models-get-major-speed-boosts/",
-        title: "OpenAI’s GPT-3, other models get major speed boosts",
-        snippet:
-          "OpenAI's GPT-3 has been improved with major speed boosts, making it more efficient and capable of handling complex language tasks at a faster rate. This update enhances the model's performance and usability for developers and researchers.",
-      },
-      {
-        url:
-          "https://venturebeat.com/2022/03/29/openais-gpt-3-other-models-get-major-speed-boosts/",
-        title: "OpenAI’s GPT-3, other models get major speed boosts",
-        snippet:
-          "OpenAI's GPT-3 has been improved with major speed boosts, making it more efficient and capable of handling complex language tasks at a faster rate. This update enhances the model's performance and usability for developers and researchers.",
-      },
-      {
-        url:
-          "https://venturebeat.com/2022/03/29/openais-gpt-3-other-models-get-major-speed-boosts/",
-        title: "OpenAI’s GPT-3, other models get major speed boosts",
-        snippet:
-          "OpenAI's GPT-3 has been improved with major speed boosts, making it more efficient and capable of handling complex language tasks at a faster rate. This update enhances the model's performance and usability for developers and researchers.",
-      },
-      {
-        url:
-          "https://venturebeat.com/2022/03/29/openais-gpt-3-other-models-get-major-speed-boosts/",
-        title: "OpenAI’s GPT-3, other models get major speed boosts",
-        snippet:
-          "OpenAI's GPT-3 has been improved with major speed boosts, making it more efficient and capable of handling complex language tasks at a faster rate. This update enhances the model's performance and usability for developers and researchers.",
-      },
-    ],
-  };
-
   return (
     <StyledScrollView className="flex bg-white content-start">
       <StyledText className="p-4 mb-4 text-xl self-center">{query}</StyledText>
@@ -156,7 +117,7 @@ export default function ResultsScreen() {
       {!gpt && (
         <ActivityIndicator
           className="pl-4 pr-4 mb-4 mt-4"
-          size="small"
+          size="large"
           color="purple"
         />
       )}
