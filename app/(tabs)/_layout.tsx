@@ -15,38 +15,16 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   // const [selectedLanguage, setSelectedLanguage] = useState('en');
 
-  useEffect(() => {
-    let x = document.cookie;
-    const parts = x.split(`lang=`);
-    if (parts.length === 2) {
-      let cLang = parts.pop().split(";").shift();
-      if (cLang == "es") {
-        window.location.href = "/es";
-      }
-      if (cLang == "id") {
-        window.location.href = "/id";
-      }
-      if (cLang == "el") {
-        window.location.href = "/el";
-      }
-    }
-  }, []);
 
   const handleLangSelection = (itemValue, itemIndex) => {
-    if (itemIndex == 0) {
-      document.cookie = "lang=en;";
-    }
     if (itemIndex == 1) {
       window.location.href = "/es";
-      document.cookie = "lang=es;";
     }
     if (itemIndex == 2) {
       window.location.href = "/id";
-      document.cookie = "lang=id;";
     }
     if (itemIndex == 3) {
       window.location.href = "/el";
-      document.cookie = "lang=el;";
     }
   };
   return (

@@ -10,16 +10,17 @@ export default function Root({ children }: { children: React.ReactNode }) {
       <head>
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
         <meta
-          content="https://websearch-via-camera.com/logo.png"
+          content="https://kxci.us/logo.png"
           itemprop="image"
         />
+        <title>Websearch via camera - kxci.us</title>
 
         <meta property="og:title" content="WebSearch Via Camera" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://websearch-via-camera.com" />
+        <meta property="og:url" content="https://search.kxci.us" />
         <meta
           property="og:image"
-          content="https://websearch-via-camera.com/logo.png"
+          content="https://kxci.us/logo.png"
         />
         <meta
           property="og:description"
