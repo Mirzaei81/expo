@@ -7,9 +7,12 @@ import {
   Platform,
   Pressable,
 } from "react-native";
-import html2canvas from 'html2canvas';
-
+let html2canvas
+if(Platform.OS==="web"){
+html2canvas = require("html2canvas");
+}
 const ScreenShot = ({ viewRef }) => {
+
   const takeScreenshot = () => {
     fetch("https://photopulse.kxci.us/record_usage/", {
                   method: "POST",
@@ -26,7 +29,6 @@ const ScreenShot = ({ viewRef }) => {
       html2canvas(viewRef.current).then((canvas) => {
         // Create a data URL from the canvas
         const dataUrl = canvas.toDataURL('image/png');
-
         // Create a link to download the screenshot
         const link = document.createElement('a');
         link.download = 'kxci.us.png';

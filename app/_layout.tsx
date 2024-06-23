@@ -2,7 +2,9 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   DefaultTheme,
   ThemeProvider,
+  NavigationContainer
 } from "@react-navigation/native";
+
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -41,7 +43,6 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
-
   return <RootLayoutNav />;
 }
 

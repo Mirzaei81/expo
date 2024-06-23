@@ -21,7 +21,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.mthebest81.myapp"
     },
     "web": {
       "bundler": "metro",
@@ -30,10 +34,20 @@
     },
     "plugins": [
       "expo-router",
-      "expo-image-picker"
+      "expo-image-picker",
+      "expo-asset",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "cfd619f5-0512-4d8c-8111-14c36cc25f0a"
+      }
     }
   }
 }
